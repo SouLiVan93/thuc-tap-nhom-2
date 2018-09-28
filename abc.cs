@@ -1,34 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataBase_QuanLyThanhToanGiangDay
 {
     class GV_CD
     {
         string connStr = @"Data Source=(local);Initial Catalog=QUAN_LY_THANH_TOAN_GIANG_DAY;Integrated Security=True";
-        static SqlConnection conn = new SqlConnection();
-        SqlDataAdapter sda = new SqlDataAdapter();
-
-        DataSet myDataSet = new DataSet();
-        public DataTable myDisplayDataTable = new DataTable();
-
-        public string MaGV, MaCD, NamHoc;
-        public int HocKy;
-
-        public GV_CD()
-        {
-            // Thiết lập kết nối đến cơ sở dữ liệu
-            conn = new SqlConnection(connStr);
-
-            // Nạp dữ liệu vào các DataSet, DataTable
-            ReLoadData();
-        }
-
+        static SqlConnection c
         public void ReLoadData()
         {
             // Khởi tạo lệnh truy vấn
@@ -47,31 +25,6 @@ namespace DataBase_QuanLyThanhToanGiangDay
             myDataSet.Tables[0].TableName = "DISPLAY";
             myDisplayDataTable = new DataTable();
             myDisplayDataTable = myDataSet.Tables["DISPLAY"];
-        }
-
-        public int IsConnOpen()
-        {
-            if (conn.State == ConnectionState.Open) return 1;
-            else return 0;
-        }
-
-        public void CloseConn()
-        {
-            conn.Close();
-        }
-
-        public void InsertGV_CD(string MaGV, string MaCD, int HocKy, string NamHoc)
-        {
-            SqlCommand insert = conn.CreateCommand();
-            insert.CommandText = "InsertGV_CD";
-            insert.CommandType = CommandType.StoredProcedure;
-            insert.Parameters.Add(new SqlParameter("@MaGV", MaGV));
-            insert.Parameters.Add(new SqlParameter("@MaCD", MaCD));
-            insert.Parameters.Add(new SqlParameter("@hocKy", HocKy));
-            insert.Parameters.Add(new SqlParameter("@namHoc", NamHoc));
-            conn.Open();
-            insert.ExecuteNonQuery();
-            conn.Close();
         }
 
         public void UpdateGV_CD(string oldMaGV, string newMaGV, string oldMaCD, string newMaCD, int oldHocKy, int newHocKy, string oldNamHoc, string newNamHoc)
